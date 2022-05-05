@@ -17,8 +17,12 @@ public abstract class Conta implements IConta{
     }
 
     @Override
-    public void sacar(double valor) {
-        saldo -= valor;
+    public void sacar(double valor) throws BancoException {
+        if (valor > saldo){
+            throw new BancoException("Saldo insuficiente.");
+        }else {
+            saldo -= valor;
+        }
     }
 
     @Override
@@ -27,7 +31,7 @@ public abstract class Conta implements IConta{
     }
 
     @Override
-    public void transferir(double valor, IConta contaDestino) {
+    public void transferir(double valor, IConta contaDestino) throws BancoException {
         this.sacar(valor);
         contaDestino.depositar(valor);
     }
@@ -46,9 +50,9 @@ public abstract class Conta implements IConta{
 
     protected void imprimirInfosComuns() {
         System.out.println("\n=== EXTRATO ===");
-        System.out.println(String.format("Titular: %s", this.cliente.getNome()));
-        System.out.println(String.format("Agencia: %d", this.agencia));
-        System.out.println(String.format("Numero: %d", this.numero));
-        System.out.println(String.format("Saldo: %.2f", this.saldo));
+        System.out.printf("Titular: %s%n", this.cliente.getNome());
+        System.out.printf("Agencia: %d%n", this.agencia);
+        System.out.printf("Numero: %d%n", this.numero);
+        System.out.printf("Saldo: %.2f%n", this.saldo);
     }
 }
